@@ -11,29 +11,47 @@ void setup() {
 
 void loop() {
   time = random(200,500); 
-  Serial.println(time);
-  LED1(time);
-
+  //Serial.println(time);
+  LED(time,0);
+  
   time = random(200,500); 
-  Serial.println(time);
-  LED2(time);
+  LED(time,2);
 }
 
-
-
-int LED1(int time) {
+int LED(int time, int pix) {
   
- int brightLow = random(3, 64);  // Creates a lower bound pixel intensity
- int brightHigh = random(80, 256);  // Creates a high bound pixel intensity
- int flicker = random (1, 20);
+ int brightLow = random(50, 100);  // Creates a lower bound pixel intensity
+ int brightHigh = random(120, 200);  // Creates a high bound pixel intensity
+ int brightMed = brightHigh - brightLow; // Sets up a medium value for the flicker brightness
+ 
+ int flicker = random (1, 15);
+ int flick_times = random (1, 3);
+ 
  if (flicker == 1){
-   flick_level = brightHigh - brightLow; // Sets up a medium value for the flicker brightness
-   strip.setBrightness(flick_level);
+   for (int j = 0; j <= flick_times; j++){
+     int flick_speed = random(50, 200);
+
+     strip.setBrightness(brightMed);
+     strip.setPixelColor(pix, strip.Color(64,32,0));
+     strip.show();
+     delay(flick_speed);
+
+     strip.setBrightness(brightLow);
+     strip.setPixelColor(pix, strip.Color(64,32,0));
+     strip.show();
+     delay(flick_speed);
+   }
+   strip.setBrightness(brightMed);
+   strip.setPixelColor(pix, strip.Color(64,32,0));
+   strip.show();
  }
+ 
+ else 
+ 
   for (int i = brightLow; i <= brightHigh; i++)
     {
       strip.setBrightness(i);
-      strip.setPixelColor(0, strip.Color(64,32,0));
+      strip.setPixelColor(pix, strip.Color(64,32,0));
       strip.show();
       delay(time/3);
     }
@@ -42,34 +60,10 @@ int LED1(int time) {
   for (int i = brightHigh; i >= brightLow; i--)
     {
       strip.setBrightness(i);
-      strip.setPixelColor(0, strip.Color(64,32,0));
+      strip.setPixelColor(pix, strip.Color(64,32,0));
       strip.show();
-      delay(time%3);
+      delay(time/2);
     }
   delay(time);
 }
 
-int LED2(int time) {
-  
- int brightLow = random(3, 64);
- int brightHigh = random(80, 256);
-  
-  for (int i = brightLow; i <= brightHigh; i++)
-    {
-      strip.setBrightness(i);
-      strip.setPixelColor(2, strip.Color(64,32,0));
-      strip.show();
-      delay(time/4);
-    }
-  delay(time);
-
-  for (int i = brightHigh; i >= brightLow; i--)
-    {
-      strip.setBrightness(i);
-      strip.setPixelColor(2, strip.Color(64,32,0));
-      strip.show();
-      delay(time%3);
-    }
-  delay(time);
-}
- //strip.clear();
