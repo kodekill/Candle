@@ -23,9 +23,13 @@ void loop() {
 
 int LED1(int time) {
   
- int brightLow = random(3, 64);
- int brightHigh = random(80, 256);
-  
+ int brightLow = random(3, 64);  // Creates a lower bound pixel intensity
+ int brightHigh = random(80, 256);  // Creates a high bound pixel intensity
+ int flicker = random (1, 20);
+ if (flicker == 1){
+   flick_level = brightHigh - brightLow; // Sets up a medium value for the flicker brightness
+   strip.setBrightness(flick_level);
+ }
   for (int i = brightLow; i <= brightHigh; i++)
     {
       strip.setBrightness(i);
